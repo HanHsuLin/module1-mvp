@@ -1,0 +1,1905 @@
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.learning-page {
+  min-height: 100vh;
+  padding:0 24px 40px;
+}
+
+.learning-card {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.learning-card h1 {
+  margin: 0 0 8px;
+  font-size: 42px;
+}
+
+.learning-card p {
+  margin: 0 0 48px;
+  color: #6b7280;
+  font-size: 18px;
+}
+
+.learning-card h2 {
+  margin-bottom: 16px;
+  font-size: 28px;
+}
+
+.learning-card textarea {
+  display: block;
+  width: 100%;
+  min-height: 140px;
+  padding: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font: inherit;
+  resize: vertical;
+}
+
+.learning-card button {
+  display: block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* 範例區域 */
+.examples {
+  margin-top: 24px;
+  margin-bottom: 32px;
+}
+
+.examples p {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+/* 範例 chips 的容器 */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* 每一個 chip */
+.learning-card .chip {
+  display: inline-block;
+  width: auto;
+  margin: 0;
+  padding: 9px 14px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #374151;
+
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* 滑鼠移到 chip 上 */
+.learning-card .chip:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+/* 點擊後產生的 focus 外框 */
+.learning-card .chip:focus {
+  outline: 2px solid #9ca3af;
+  outline-offset: 2px;
+}
+
+/* 主要按鈕 */
+.learning-card .primary-button {
+  display: inline-block;
+  width: auto;
+  margin-top: 0;
+  padding: 12px 22px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #1f2937;
+  color: white;
+
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.learning-card .primary-button:hover {
+  background: #374151;
+}
+
+/* ===== Header ===== */
+
+.app-header {
+  width: 100%;
+  height: 72px;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  background: #181818;
+  color: #ffffff;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.header-name {
+  color: #181818;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.header-module {
+  color: #737373;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* ===== Input Page ===== */
+
+.learning-card {
+  width: min(100%, 960px);
+  margin: 0 auto;
+  padding: 96px 32px 120px;
+}
+
+.learning-card h2 {
+  margin: 0 0 20px;
+  color: #181818;
+  font-size: 40px;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+}
+
+.learning-card textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 24px 26px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+  color: #181818;
+
+  border: 1px solid #d8d8d8;
+  border-radius: 16px;
+
+  font: inherit;
+  font-size: 18px;
+  line-height: 1.6;
+
+  resize: vertical;
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.learning-card textarea:focus {
+  border-color: #8a8a8a;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+}
+
+.learning-card textarea::placeholder {
+  color: #9a9a9a;
+}
+
+.examples {
+  margin-top: 22px;
+}
+
+.examples > p {
+  margin: 0 0 16px;
+  color: #737373;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.primary-button {
+  margin-top: 28px;
+  padding: 15px 22px;
+
+  background: #181818;
+  color: #ffffff;
+
+  border: 1px solid #181818;
+  border-radius: 12px;
+
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
+}
+
+.primary-button:hover {
+  background: #333333;
+}
+
+.primary-button:active {
+  transform: translateY(1px);
+}
+
+
+/* ==================================================
+   CLARIFY PAGE
+   ================================================== */
+
+.learning-card:has(.clarify-page) {
+  width: min(1440px, 92vw);
+  max-width: none;
+  height: calc(100vh - 72px);
+  margin: 0 auto;
+  padding: 28px 32px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.clarify-page {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+
+/* ===== 兩欄配置 ===== */
+
+.clarify-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(0, 4fr);
+  gap: 32px;
+
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+
+  align-items: stretch;
+}
+
+
+/* ==================================================
+   LEFT — LEARNING PROFILE
+   ================================================== */
+
+.profile-panel {
+  width: 100%;
+  height: fit-content;
+  max-height: 100%;
+
+  box-sizing: border-box;
+  padding: 20px;
+
+  background: #ffffff;
+  border: 1px solid #e1e1e1;
+  border-radius: 14px;
+
+  overflow-y: auto;
+}
+
+.profile-header {
+  margin-bottom: 28px;
+}
+
+.profile-header h3 {
+  margin: 0 0 4px;
+
+  color: #181818;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.profile-header p {
+  margin: 0;
+
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.profile-count {
+  display: block;
+
+  margin-top: 26px;
+
+  color: #1f2937;
+  font-size: 16px;
+}
+
+
+/* ===== Profile items ===== */
+
+.profile-list {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.profile-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.profile-status {
+  flex-shrink: 0;
+
+  color: #1f2937;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.profile-item strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.profile-item p {
+  margin: 0;
+
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+
+/* ==================================================
+   RIGHT — CONVERSATION
+   ================================================== */
+
+.conversation-panel {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+
+  box-sizing: border-box;
+}
+
+
+/* ===== 只有這裡可以捲動 ===== */
+
+.conversation-list {
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 4px 12px 20px 4px;
+
+  box-sizing: border-box;
+
+  scrollbar-gutter: stable;
+}
+
+
+/* ==================================================
+   MESSAGE
+   ================================================== */
+
+.message-row {
+  display: flex;
+
+  width: 100%;
+
+  margin-bottom: 24px;
+}
+
+.message-row.ai {
+  justify-content: flex-start;
+}
+
+.message-row.learner {
+  justify-content: flex-end;
+}
+
+.message-bubble {
+  display: flex;
+  flex-direction: column;
+
+  max-width: 72%;
+}
+
+.message-bubble.ai {
+  align-items: flex-start;
+}
+
+.message-bubble.learner {
+  align-items: flex-end;
+}
+
+.message-role {
+  margin-bottom: 7px;
+
+  color: #6b7280;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.message-content {
+  padding: 14px 18px;
+
+  border-radius: 12px;
+
+  font-size: 15px;
+  line-height: 1.65;
+
+  word-break: break-word;
+}
+
+.message-bubble.ai .message-content {
+  background: #ffffff;
+  color: #1f2937;
+
+  border: 1px solid #e1e1e1;
+
+  border-top-left-radius: 4px;
+}
+
+.message-bubble.learner .message-content {
+  background: #1f2937;
+  color: #ffffff;
+
+  border-top-right-radius: 4px;
+}
+
+
+/* ==================================================
+   ANSWER AREA
+   ================================================== */
+
+.answer-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  flex-shrink: 0;
+
+  width: 100%;
+
+  margin: 0;
+  padding: 18px 0 0;
+
+  box-sizing: border-box;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+
+/* 這裡一定要提高 specificity，
+   否則前面的 .learning-card textarea 會蓋掉 */
+
+.learning-card .answer-area textarea {
+  flex: 1;
+
+  width: auto;
+  min-height: 56px;
+  height: 56px;
+  max-height: 56px;
+
+  margin: 0;
+  padding: 15px 18px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+  color: #1f2937;
+
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+
+  font-size: 15px;
+  line-height: 24px;
+
+  resize: none;
+  overflow-y: auto;
+}
+
+.learning-card .answer-area textarea:focus {
+  outline: none;
+
+  border-color: #9ca3af;
+
+  box-shadow: none;
+}
+
+
+/* 送出回答 */
+
+.learning-card .answer-area .primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: auto;
+  height: 56px;
+
+  margin: 0;
+  padding: 0 22px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: #1f2937;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+/* ==================================================
+   TYPING EFFECT
+   ================================================== */
+
+.typing-cursor {
+  display: inline-block;
+
+  margin-left: 2px;
+
+  animation: cursor-blink 0.8s infinite;
+}
+
+@keyframes cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+
+/* ==================================================
+   HEADER HOME BUTTON
+   ================================================== */
+
+.brand-button {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: inherit;
+  font: inherit;
+
+  cursor: pointer;
+}
+
+/* AI 黑色 Logo */
+.brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+
+  background: #181818;
+  color: #ffffff;
+
+  border-radius: 8px;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* AI Learning Coach */
+.brand-name {
+  color: #181818;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.brand-button:hover {
+  opacity: 0.8;
+}
+
+.brand-button:focus,
+.brand-button:focus-visible {
+  outline: none;
+}
+
+.module-label {
+  color: #737373;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+
+
+/* ==================================================
+   RESPONSIVE
+   ================================================== */
+
+  
+@media (max-width: 900px) {
+  .learning-card:has(.clarify-page) {
+    width: 100%;
+    height: auto;
+
+    padding: 24px;
+    overflow: visible;
+  }
+
+  .clarify-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .profile-panel {
+    height: auto;
+    max-height: none;
+  }
+
+  .conversation-panel {
+    height: 650px;
+  }
+}
+
+/* ==================================================
+   GOAL CONFIRMATION PAGE
+   ================================================== */
+.learning-card:has(.goal-page) {
+  width: min(1440px, 92vw);
+  max-width: none;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+.goal-page {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 56px 32px 80px;
+  box-sizing: border-box;
+}
+
+.goal-page-header {
+  margin-bottom: 40px;
+}
+
+.goal-page-header h2 {
+  margin: 0 0 12px;
+  font-size: 40px;
+  font-weight: 700;
+  color: #182333;
+}
+
+.goal-page-header p {
+  margin: 0;
+  font-size: 17px;
+  color: #7a8492;
+}
+
+
+/* ---------- 建議學習目標 ---------- */
+
+.goal-main-card {
+  background: #ffffff;
+  border: 1px solid #e2e6eb;
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+}
+
+.goal-label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7a8492;
+}
+
+.goal-statement {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.7;
+  font-weight: 500;
+  color: #182333;
+}
+
+
+/* ---------- 區塊 ---------- */
+
+.goal-section-block {
+  background: #ffffff;
+  border: 1px solid #e2e6eb;
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+}
+
+.goal-section-block > h3 {
+  margin: 0 0 22px;
+  font-size: 20px;
+  color: #182333;
+}
+
+
+/* ---------- 學習條件 ---------- */
+
+.goal-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.goal-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 18px 20px;
+  background: #f7f8fa;
+  border-radius: 12px;
+}
+
+.goal-summary-item span {
+  font-size: 13px;
+  color: #89929f;
+}
+
+.goal-summary-item strong {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #182333;
+}
+
+.goal-summary-wide {
+  grid-column: 1 / -1;
+}
+
+
+/* ---------- AI 說明 ---------- */
+
+.goal-ai-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.goal-ai-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  background: #182333;
+  color: #ffffff;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.goal-ai-header strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 16px;
+  color: #182333;
+}
+
+.goal-ai-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #89929f;
+}
+
+.goal-ai-message {
+  padding: 20px 22px;
+
+  background: #f7f8fa;
+  border-radius: 12px;
+
+  font-size: 16px;
+  line-height: 1.75;
+  color: #4d5968;
+}
+
+
+/* ---------- Buttons ---------- */
+
+.goal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.goal-actions .secondary-button,
+.goal-actions .primary-button {
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 10px;
+}
+
+
+
+/* ==================================================
+   TABLET / MOBILE
+   ================================================== */
+
+@media (max-width: 768px) {
+
+  .goal-page {
+  width: 100%;
+  padding: 32px 18px 48px;
+}
+
+  .goal-top-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .goal-top-layout .goal-main-card,
+  .goal-condition-card {
+    width: 100%;
+  }
+
+  .goal-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .goal-summary-wide {
+    grid-column: auto;
+  }
+
+  .goal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .goal-actions .primary-button,
+  .goal-actions .secondary-button {
+    width: 100%;
+  }
+}
+
+/* ==================================================
+   GOAL PAGE — COMPACT DESKTOP
+   一頁顯示、不需要捲動
+   ================================================== */
+
+.learning-card:has(.goal-page) {
+  width: 100%;
+  max-width: none;
+  height: calc(100vh - 72px);
+
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+
+/* ==================================================
+   整個 Goal 頁面
+   ================================================== */
+
+.goal-page {
+  width: calc(100vw - 120px);
+  max-width: 1440px;
+  height: 100%;
+
+  margin: 0 auto;
+  padding: 28px 0 24px;
+
+  box-sizing: border-box;
+}
+
+
+/* ==================================================
+   標題區
+   ================================================== */
+
+.goal-page-header {
+  margin-bottom: 22px;
+}
+
+.goal-page-header h2 {
+  margin: 0 0 6px;
+
+  font-size: 36px;
+  line-height: 1.2;
+  font-weight: 700;
+
+  color: #182333;
+}
+
+.goal-page-header p {
+  margin: 0;
+
+  font-size: 15px;
+  line-height: 1.5;
+
+  color: #7a8492;
+}
+
+
+/* ==================================================
+   上方兩欄
+   左：學習條件
+   右：建議學習目標
+   ================================================== */
+
+.goal-top-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+
+/* ==================================================
+   共用卡片
+   ================================================== */
+
+.goal-main-card,
+.goal-section-block {
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e6eb;
+  border-radius: 16px;
+}
+
+
+/* ==================================================
+   左邊：學習條件
+   ================================================== */
+
+.goal-condition-card {
+  margin: 0;
+  padding: 22px 32px;
+}
+
+.goal-condition-card > h3 {
+  margin: 0 0 16px;
+
+  font-size: 20px;
+  line-height: 1.3;
+
+  color: #182333;
+}
+
+
+/* 學習條件 Grid */
+
+.goal-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+
+/* 每一個條件 */
+
+.goal-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  min-height: 58px;
+
+  padding: 12px 18px;
+
+  box-sizing: border-box;
+
+  background: #f7f8fa;
+  border-radius: 10px;
+}
+
+.goal-summary-item span {
+  font-size: 12px;
+  line-height: 1.3;
+
+  color: #89929f;
+}
+
+.goal-summary-item strong {
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 600;
+
+  color: #182333;
+}
+
+
+/* 預期成果橫跨兩欄 */
+
+.goal-summary-wide {
+  grid-column: 1 / -1;
+}
+
+
+/* ==================================================
+   右邊：建議學習目標
+   ================================================== */
+
+.goal-top-layout .goal-main-card {
+  margin: 0;
+  padding: 22px 32px;
+
+  min-height: 100%;
+}
+
+.goal-label {
+  display: block;
+
+  margin-bottom: 12px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #7a8492;
+}
+
+.goal-top-layout .goal-statement {
+  margin: 0;
+
+  font-size: 18px;
+  line-height: 1.75;
+  font-weight: 400;
+
+  color: #5f6977;
+}
+
+
+/* ==================================================
+   AI COACH
+   ================================================== */
+
+.goal-ai-card {
+  width: 100%;
+
+  margin: 0;
+  padding: 20px 32px;
+
+  box-sizing: border-box;
+}
+
+
+/* AI 上方資訊 */
+
+.goal-ai-header {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 14px;
+}
+
+.goal-ai-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  background: #182333;
+  color: #ffffff;
+
+  border-radius: 9px;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.goal-ai-header strong {
+  display: block;
+
+  margin-bottom: 1px;
+
+  font-size: 15px;
+  line-height: 1.3;
+
+  color: #182333;
+}
+
+.goal-ai-header p {
+  margin: 0;
+
+  font-size: 13px;
+  line-height: 1.3;
+
+  color: #89929f;
+}
+
+
+/* AI 回答框 */
+
+.goal-ai-message {
+  padding: 14px 20px;
+
+  background: #f7f8fa;
+  border-radius: 10px;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  color: #4d5968;
+}
+
+
+/* ==================================================
+   BUTTONS
+   ================================================== */
+
+.goal-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 16px;
+
+  margin-top: 20px;
+}
+
+
+/* 兩個按鈕完全一樣大小 */
+
+.goal-actions .primary-button,
+.goal-actions .secondary-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 220px;
+  height: 52px;
+
+  margin: 0;
+  padding: 0 20px;
+
+  box-sizing: border-box;
+
+  border-radius: 10px;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+
+/* 修改目標 */
+
+.goal-actions .secondary-button {
+  border: 1px solid #e5e7eb;
+
+  background: #f5f5f4;
+  color: #182333;
+}
+
+
+/* 確認目標 */
+
+.goal-actions .primary-button {
+  border: 1px solid #182333;
+
+  background: #182333;
+  color: #ffffff;
+}
+
+
+/* ==================================================
+   MOBILE
+   手機還是允許正常往下捲
+   ================================================== */
+
+@media (max-width: 768px) {
+
+  .learning-card:has(.goal-page) {
+    height: auto;
+    overflow: visible;
+  }
+
+  .goal-page {
+    width: 100%;
+    height: auto;
+
+    padding: 28px 18px 48px;
+  }
+
+  .goal-page-header h2 {
+    font-size: 30px;
+  }
+
+  .goal-top-layout {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .goal-condition-card,
+  .goal-top-layout .goal-main-card,
+  .goal-ai-card {
+    padding: 20px;
+  }
+
+  .goal-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .goal-summary-wide {
+    grid-column: auto;
+  }
+
+  .goal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .goal-actions .primary-button,
+  .goal-actions .secondary-button {
+    width: 100%;
+    height: 52px;
+  }
+}
+
+/* ==================================================
+   REVISE PAGE
+   修改學習方案
+   ================================================== */
+
+.learning-card:has(.revise-page) {
+  width: min(1440px, 92vw);
+  max-width: none;
+  height: calc(100vh - 72px);
+
+  margin: 0 auto;
+  padding: 28px 32px 24px;
+
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+
+/* ==================================================
+   PAGE
+   ================================================== */
+
+.revise-page {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 0;
+}
+
+
+/* ==================================================
+   HEADER
+   ================================================== */
+
+.revise-page-header {
+  flex-shrink: 0;
+  margin-bottom: 20px;
+}
+
+.revise-page-header h2 {
+  margin: 0 0 6px;
+
+  color: #181818;
+
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.revise-page-header p {
+  margin: 0;
+
+  color: #737373;
+
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+
+/* ==================================================
+   MAIN TWO COLUMN LAYOUT
+   左：原方案
+   右：AI 對話
+   ================================================== */
+
+.revise-layout {
+  flex: 1;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(320px, 2fr)
+    minmax(0, 3fr);
+
+  gap: 24px;
+
+  width: 100%;
+  min-height: 0;
+
+  align-items: stretch;
+}
+
+
+/* ==================================================
+   LEFT — ORIGINAL PLAN
+   ================================================== */
+
+.revise-original-panel {
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+
+  padding: 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e1e1;
+  border-radius: 16px;
+
+  /*
+   * 左側不要 scrollbar
+   */
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ---------- 標題 ---------- */
+
+.revise-panel-title {
+  flex-shrink: 0;
+  margin-bottom: 14px;
+}
+
+.revise-panel-title span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.revise-panel-title h3 {
+  margin: 0;
+
+  color: #1f2937;
+
+  font-size: 19px;
+  font-weight: 650;
+}
+
+
+/* ---------- 原學習目標 ---------- */
+
+.revise-original-goal {
+  flex-shrink: 0;
+
+  margin-bottom: 14px;
+  padding: 16px 18px;
+
+  background: #f7f8fa;
+
+  border-radius: 11px;
+
+  color: #4b5563;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* ==================================================
+   ORIGINAL CONDITIONS
+   ================================================== */
+
+.revise-condition-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+
+  width: 100%;
+
+  min-height: 0;
+}
+
+.revise-condition-item {
+  min-width: 0;
+
+  padding: 12px 14px;
+
+  background: #f7f8fa;
+
+  border-radius: 10px;
+}
+
+.revise-condition-item span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #9ca3af;
+
+  font-size: 11px;
+}
+
+.revise-condition-item strong {
+  display: block;
+
+  color: #1f2937;
+
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 600;
+
+  word-break: break-word;
+}
+
+.revise-condition-wide {
+  grid-column: 1 / -1;
+}
+
+
+/* ==================================================
+   RIGHT — AI CHAT
+   ================================================== */
+
+.revise-chat-panel {
+  width: 100%;
+  height: 100%;
+
+  min-width: 0;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e1e1;
+  border-radius: 16px;
+
+  overflow: hidden;
+}
+
+
+/* ==================================================
+   CHAT HEADER
+   ================================================== */
+
+.revise-chat-header {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 16px 20px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.revise-ai-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  background: #1f2937;
+  color: #ffffff;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.revise-chat-header strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #1f2937;
+
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.revise-chat-header p {
+  margin: 0;
+
+  color: #9ca3af;
+
+  font-size: 12px;
+}
+
+
+/* ==================================================
+   CHAT MESSAGES
+   只有這裡可以捲動
+   ================================================== */
+
+.revise-chat-messages {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 18px 20px;
+
+  box-sizing: border-box;
+
+  scrollbar-gutter: stable;
+}
+
+
+/* ---------- Message ---------- */
+
+.revision-message {
+  width: fit-content;
+  max-width: 72%;
+
+  margin-bottom: 14px;
+
+  padding: 11px 15px;
+
+  border-radius: 11px;
+
+  font-size: 14px;
+  line-height: 1.55;
+
+  word-break: break-word;
+}
+
+.revision-message.ai {
+  margin-right: auto;
+
+  background: #f4f5f7;
+  color: #4b5563;
+
+  border-top-left-radius: 4px;
+}
+
+.revision-message.learner {
+  margin-left: auto;
+
+  background: #1f2937;
+  color: #ffffff;
+
+  border-top-right-radius: 4px;
+}
+
+
+/* ==================================================
+   CHAT INPUT
+   ================================================== */
+
+.revise-chat-input {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  width: 100%;
+
+  padding: 14px 16px;
+
+  box-sizing: border-box;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+
+/*
+ * specificity 要比前面的
+ * .learning-card textarea 高
+ */
+
+.learning-card .revise-chat-input textarea {
+  flex: 1;
+
+  width: auto;
+
+  min-height: 50px;
+  height: 50px;
+  max-height: 50px;
+
+  margin: 0;
+  padding: 12px 15px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+  color: #1f2937;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  font-size: 14px;
+  line-height: 24px;
+
+  resize: none;
+  overflow-y: auto;
+}
+
+.learning-card .revise-chat-input textarea:focus {
+  outline: none;
+
+  border-color: #9ca3af;
+
+  box-shadow: none;
+}
+
+
+/* ---------- Send ---------- */
+
+.learning-card .revision-send-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 86px;
+  height: 50px;
+
+  margin: 0;
+  padding: 0;
+
+  background: #1f2937;
+  color: #ffffff;
+
+  border: 0;
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.learning-card .revision-send-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+
+/* ==================================================
+   BOTTOM ACTIONS
+   兩顆按鈕大小相同、整組置中
+   ================================================== */
+
+.revise-bottom-actions {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 16px;
+
+  width: 100%;
+
+  margin-top: 18px;
+}
+
+
+/*
+ * 提高 specificity
+ * 避免被前面的 learning-card button 蓋掉
+ */
+
+.learning-card .revise-bottom-actions .secondary-button,
+.learning-card .revise-bottom-actions .primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 260px;
+  height: 54px;
+
+  margin: 0;
+  padding: 0 20px;
+
+  box-sizing: border-box;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+
+/* ---------- 返回原方案 ---------- */
+
+.learning-card .revise-bottom-actions .secondary-button {
+  background: #ffffff;
+  color: #1f2937;
+
+  border: 1px solid #d1d5db;
+}
+
+.learning-card .revise-bottom-actions .secondary-button:hover {
+  background: #f7f8fa;
+}
+
+
+/* ---------- 完成方案 ---------- */
+
+.learning-card .revise-bottom-actions .primary-button {
+  background: #1f2937;
+  color: #ffffff;
+
+  border: 1px solid #1f2937;
+}
+
+.learning-card .revise-bottom-actions .primary-button:hover:not(:disabled) {
+  background: #374151;
+}
+
+
+/* ---------- Disabled ---------- */
+
+.learning-card .revise-bottom-actions .primary-button:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+
+  border-color: #e5e7eb;
+
+  cursor: not-allowed;
+}
+
+
+/* ==================================================
+   MOBILE / TABLET
+   ================================================== */
+
+@media (max-width: 900px) {
+
+  .learning-card:has(.revise-page) {
+    width: 100%;
+    height: auto;
+
+    padding: 24px 18px 40px;
+
+    overflow: visible;
+  }
+
+  .revise-page {
+    height: auto;
+  }
+
+  .revise-layout {
+    grid-template-columns: 1fr;
+
+    height: auto;
+  }
+
+  .revise-original-panel {
+    height: auto;
+
+    overflow: visible;
+  }
+
+  .revise-chat-panel {
+    height: 520px;
+  }
+
+  .revise-bottom-actions {
+    flex-direction: column;
+  }
+
+  .learning-card .revise-bottom-actions .secondary-button,
+  .learning-card .revise-bottom-actions .primary-button {
+    width: 100%;
+    max-width: 420px;
+  }
+}
