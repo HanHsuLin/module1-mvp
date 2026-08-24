@@ -105,44 +105,9 @@ function summarizeMotivation(answer: string): string {
 }
 
 function summarizeOutcome(answer: string): string {
-  if (
-    answer.includes('聊天') ||
-    answer.includes('對話') ||
-    answer.includes('溝通')
-  ) {
-    return '日常溝通與對話'
-  }
-
-  if (
-    answer.includes('簡報') ||
-    answer.includes('報告')
-  ) {
-    return '英文簡報表達'
-  }
-
-  if (
-    answer.includes('摘要') ||
-    answer.includes('論文') ||
-    answer.includes('寫作')
-  ) {
-    return '學術寫作能力'
-  }
-
-  if (
-    answer.includes('資料分析') ||
-    answer.includes('分析資料')
-  ) {
-    return '資料分析應用'
-  }
-
-  if (
-    answer.includes('程式') ||
-    answer.includes('開發')
-  ) {
-    return '程式實作能力'
-  }
-
-  return shortenText(answer, 18)
+  // 預期成果會直接影響後續學習目標，
+  // 保留完整內容，由介面自然換行。
+  return answer
 }
 
 function summarizeDuration(answer: string): string {

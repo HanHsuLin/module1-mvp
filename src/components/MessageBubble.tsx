@@ -6,17 +6,12 @@ type MessageBubbleProps = {
 }
 
 function MessageBubble({ role, text }: MessageBubbleProps) {
-  const [displayedText, setDisplayedText] = useState(
-    role === 'learner' ? text : ''
-  )
+  const [displayedText, setDisplayedText] = useState('')
 
   useEffect(() => {
     if (role === 'learner') {
-      setDisplayedText(text)
       return
     }
-
-    setDisplayedText('')
 
     let index = 0
 

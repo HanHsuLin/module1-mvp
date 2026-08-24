@@ -23,3 +23,30 @@ export interface LearningGoal {
   dailyTime: string
   aiRationale: string
 }
+
+export type ProfileFieldStatus = 'missing' | 'partial' | 'complete'
+
+export interface ProfileFieldAssessment {
+  value: string | null
+  status: ProfileFieldStatus
+  evidence: string | null
+}
+
+export interface LearningConversationResult {
+  reply: string
+  profile: {
+    topic: ProfileFieldAssessment
+    motivation: ProfileFieldAssessment
+    outcome: ProfileFieldAssessment
+    duration: ProfileFieldAssessment
+    dailyTime: ProfileFieldAssessment
+  }
+  isReady: boolean
+  questionFocus:
+    | 'topic'
+    | 'motivation'
+    | 'outcome'
+    | 'duration'
+    | 'dailyTime'
+    | 'confirmation'
+}

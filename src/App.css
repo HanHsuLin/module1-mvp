@@ -564,7 +564,7 @@
 
   flex-shrink: 0;
 
-  width: auto;
+  width: 120px;
   height: 56px;
 
   margin: 0;
@@ -580,6 +580,42 @@
   font-weight: 600;
 
   cursor: pointer;
+}
+
+/* 完整長句不顯示推薦時，仍保留輸入框與開始按鈕的呼吸空間。 */
+.learning-card textarea + .input-start-button {
+  margin-top: 28px;
+}
+
+.learning-card .answer-area .primary-button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.learning-card .answer-area + .primary-button {
+  margin-top: 16px;
+}
+
+.thinking-message {
+  color: #6b7280;
+}
+
+.thinking-dots {
+  display: inline-block;
+  width: 1.4em;
+  text-align: left;
+  animation: thinking-dots 1.2s ease-in-out infinite;
+}
+
+@keyframes thinking-dots {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 
@@ -1413,7 +1449,8 @@
 
 .revise-original-panel {
   width: 100%;
-  height: 100%;
+  height: auto;
+  align-self: start;
 
   box-sizing: border-box;
 
@@ -1427,7 +1464,7 @@
   /*
    * 左側不要 scrollbar
    */
-  overflow: hidden;
+  overflow: visible;
 
   display: flex;
   flex-direction: column;

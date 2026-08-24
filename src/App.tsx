@@ -11,7 +11,12 @@ import type {
 import { summarizeProfileField } from './ai/summarizeLearningProfile'
 import { getTopicSuggestions } from './utils/getTopicSuggestions'
 import { evaluateLearningAnswer } from './ai/evaluateLearningAnswer'
-import { getNextQuestion } from './ai/learningDecision'
+import { continueLearningConversation } from './ai/learningConversation'
+import { continueRevisionConversation } from './ai/revisionConversation'
+import {
+  generateLearningGoal,
+  reviseLearningGoal,
+} from './ai/generateLearningGoal'
 
 import './App.css'
 
@@ -19,6 +24,34 @@ import './App.css'
 type Message = {
   role: 'ai' | 'learner'
   text: string
+}
+
+function TypewriterText({ text }: { text: string }) {
+  const [displayedText, setDisplayedText] = useState('')
+
+  useEffect(() => {
+    let characterIndex = 0
+
+    const timer = window.setInterval(() => {
+      characterIndex += 1
+      setDisplayedText(text.slice(0, characterIndex))
+
+      if (characterIndex >= text.length) {
+        window.clearInterval(timer)
+      }
+    }, 40)
+
+    return () => window.clearInterval(timer)
+  }, [text])
+
+  return (
+    <>
+      {displayedText}
+      {displayedText.length < text.length && (
+        <span className="typing-cursor">|</span>
+      )}
+    </>
+  )
 }
 
 
@@ -425,26 +458,15 @@ function generateRevisedGoalStatement(
        5. 重新組合學習情境描述
        ================================================== */
 
-    let situationDescription = ''
-
-
-    if (
+    const situationDescription =
       normalSituations.length > 0 &&
       reducedUniqueSituations.length > 0
-    ) {
-      situationDescription =
-        `以${normalSituations.join('、')}為主要練習情境，` +
-        `並降低${reducedUniqueSituations.join('、')}的練習比重`
-    } else if (
-      reducedUniqueSituations.length > 0
-    ) {
-      situationDescription =
-        `適度練習${reducedUniqueSituations.join('、')}，` +
-        `但降低這些內容的學習比重`
-    } else {
-      situationDescription =
-        `循序練習${uniqueSituations.join('、')}等實用情境`
-    }
+        ? `以${normalSituations.join('、')}為主要練習情境，` +
+          `並降低${reducedUniqueSituations.join('、')}的練習比重`
+        : reducedUniqueSituations.length > 0
+          ? `適度練習${reducedUniqueSituations.join('、')}，` +
+            `但降低這些內容的學習比重`
+          : `循序練習${uniqueSituations.join('、')}等實用情境`
 
 
     /* ==================================================
@@ -559,19 +581,22 @@ function App() {
   >('input')
   const [error, setError] = useState('')
   const [reason, setReason] = useState('')
-  const [answers, setAnswers] = useState<string[]>([])
-
   const [currentFieldAnswers, setCurrentFieldAnswers] =
   useState<string[]>([])
-
-  const [revisionRequest, setRevisionRequest] = useState('')
   
   const [questionStep, setQuestionStep] = useState(0)
   const [messages, setMessages] = useState<Message[]>([])
   const [isComplete, setIsComplete] = useState(false)
   const [pendingDailyTime, setPendingDailyTime] = useState<string | null>(null)
+  const [isAiLoading, setIsAiLoading] = useState(false)
+  const [isGoalLoading, setIsGoalLoading] = useState(false)
+  const [isRevisionGenerating, setIsRevisionGenerating] = useState(false)
+  const [isRevisionAiLoading, setIsRevisionAiLoading] = useState(false)
 
   const conversationListRef = useRef<HTMLDivElement | null>(null)
+  const startButtonRef = useRef<HTMLButtonElement | null>(null)
+  const answerButtonRef = useRef<HTMLButtonElement | null>(null)
+  const revisionSendButtonRef = useRef<HTMLButtonElement | null>(null)
 
 
   const [revisionInput, setRevisionInput] = useState('')
@@ -611,8 +636,6 @@ function App() {
     '你每天大約願意投入多少時間學習？',
   ]
 
-  const nextQuestion = getNextQuestion(learningProfile)
-
   const profileFields: Exclude<
     keyof LearningProfile,
     'topic'
@@ -634,27 +657,60 @@ function App() {
     top: conversationList.scrollHeight,
     behavior: 'smooth',
   })
-}, [messages])
+}, [messages, isAiLoading])
 
-function handleRevisionMessage() {
+  function applyConversationProfile(
+    result: Awaited<ReturnType<typeof continueLearningConversation>>,
+    fallbackProfile: LearningProfile
+  ) {
+    const updatedProfile: LearningProfile = { ...fallbackProfile }
+    const updatedSummary: LearningProfileSummary = {
+      topic: summarizeProfileField(
+        'topic',
+        result.profile.topic.value ?? fallbackProfile.topic
+      ),
+    }
+
+    const fields: Array<Exclude<keyof LearningProfile, 'topic'>> = [
+      'motivation',
+      'outcome',
+      'duration',
+      'dailyTime',
+    ]
+
+    for (const field of fields) {
+      const value = result.profile[field].value
+      if (value) {
+        updatedProfile[field] = value
+        updatedSummary[field] = summarizeProfileField(field, value)
+      }
+    }
+
+    setLearningProfile(updatedProfile)
+    setLearningProfileSummary(updatedSummary)
+
+    const firstIncompleteIndex = fields.findIndex(
+      (field) => result.profile[field].status !== 'complete'
+    )
+    setQuestionStep(firstIncompleteIndex === -1 ? fields.length : firstIncompleteIndex)
+    setIsComplete(result.isReady)
+  }
+
+async function handleRevisionMessage() {
   const input = revisionInput.trim()
 
-  if (!input) {
+  if (!input || !learningGoal || isRevisionAiLoading) {
     return
   }
 
-  setRevisionMessages((prev) => [
-    ...prev,
-    {
-      role: 'learner',
-      text: input,
-    },
-  ])
-
+  const submittedMessages: Message[] = [
+    ...revisionMessages,
+    { role: 'learner', text: input },
+  ]
+  setRevisionMessages(submittedMessages)
   setRevisionInput('')
 
   const normalized = input.replace(/\s/g, '')
-
   const finishPatterns = [
     '沒有了',
     '沒了',
@@ -671,76 +727,35 @@ function handleRevisionMessage() {
   const wantsToFinish = finishPatterns.some(
     (pattern) => normalized === pattern
   )
-
-  if (wantsToFinish) {
-    if (revisionRequests.length === 0) {
-      setRevisionMessages((prev) => [
-        ...prev,
-        {
-          role: 'ai',
-          text: '目前還沒有記錄到你希望修改的內容。如果原本的方案已經符合需求，可以直接返回原方案；如果想調整，可以告訴我希望增加、減少或改變哪些內容。',
-        },
-      ])
-
-      return
-    }
-
-    setRevisionReady(true)
-
-    setRevisionMessages((prev) => [
-      ...prev,
-      {
-        role: 'ai',
-        text: `好的，目前我已經整理到 ${revisionRequests.length} 項調整需求。我會保留原本沒有要求變更的學習條件，並依照剛才討論的內容重新整理學習方案。你可以按下「完成討論，產生新方案」。`,
-      },
-    ])
-
-    return
-  }
-
-  const updatedRequests = [...revisionRequests, input]
-
+  const updatedRequests = wantsToFinish
+    ? revisionRequests
+    : [...revisionRequests, input]
   setRevisionRequests(updatedRequests)
   setRevisionReady(false)
 
-  let response = ''
-
-  if (
-    input.includes('增加') ||
-    input.includes('加入') ||
-    input.includes('多一點') ||
-    input.includes('加強')
-  ) {
-    response =
-      '了解，我先記下這個新增方向。除了這項內容之外，還有其他希望增加、減少或調整的地方嗎？如果沒有，可以直接回答「沒有了」。'
-  } else if (
-    input.includes('減少') ||
-    input.includes('少一點') ||
-    input.includes('刪除') ||
-    input.includes('不要')
-  ) {
-    response =
-      '了解，我會降低或移除你提到的這部分內容。還有其他希望調整的地方嗎？如果沒有，可以回答「沒有了」。'
-  } else if (
-    input.includes('時間') ||
-    input.includes('每天') ||
-    input.includes('小時') ||
-    input.includes('分鐘')
-  ) {
-    response =
-      '了解，你希望調整學習時間安排，我先記下來。還有其他學習內容或安排希望一起修改嗎？'
-  } else {
-    response =
-      '了解，我先記下這個調整方向。還有其他希望增加、減少或改變的內容嗎？如果沒有，可以回答「沒有了」。'
+  setIsRevisionAiLoading(true)
+  try {
+    const result = await continueRevisionConversation(
+      learningGoal,
+      submittedMessages
+    )
+    setRevisionMessages([
+      ...submittedMessages,
+      { role: 'ai', text: result.reply },
+    ])
+    setRevisionReady(result.isReady && updatedRequests.length > 0)
+  } catch {
+    const fallbackReply = wantsToFinish && updatedRequests.length > 0
+      ? '修改需求已經整理完成，你可以按下「完成討論，產生新方案」。'
+      : '我已記下這項修改。還有其他想調整的內容嗎？如果沒有，可以回答「沒有了」。'
+    setRevisionMessages([
+      ...submittedMessages,
+      { role: 'ai', text: fallbackReply },
+    ])
+    setRevisionReady(wantsToFinish && updatedRequests.length > 0)
+  } finally {
+    setIsRevisionAiLoading(false)
   }
-
-  setRevisionMessages((prev) => [
-    ...prev,
-    {
-      role: 'ai',
-      text: response,
-    },
-  ])
 }
 
 
@@ -753,7 +768,6 @@ function handleRevisionMessage() {
     setStep('input')
     setError('')
     setReason('')
-    setRevisionRequest('')
     setQuestionStep(0)
     setMessages([])
     setCurrentFieldAnswers([])
@@ -782,8 +796,14 @@ function handleRevisionMessage() {
       placeholder="例如：我想學 Python 資料分析"
       value={learningNeed}
       onChange={(event) => {
-        setLearningNeed(event.target.value)
-        setError('')
+                setLearningNeed(event.target.value)
+                setError('')
+      }}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault()
+          startButtonRef.current?.click()
+        }
       }}
     />
 
@@ -793,16 +813,13 @@ function handleRevisionMessage() {
       </p>
     )}
 
-    <div className="examples">
-      <p>
-        {learningNeed.trim() === ''
-          ? '不知道怎麼開始？試試看：'
-          : suggestions.length > 0
-            ? '你可能想學：'
-            : '目前沒有推薦方向，你仍然可以直接使用目前的學習需求。'}
-      </p>
-
-      {suggestions.length > 0 && (
+    {suggestions.length > 0 && (
+      <div className="examples">
+        <p>
+          {learningNeed.trim() === ''
+            ? '不知道怎麼開始？試試看：'
+            : '根據你輸入的關鍵字：'}
+        </p>
         <div className="chip-group">
           {suggestions.map((suggestion) => (
             <button
@@ -817,14 +834,15 @@ function handleRevisionMessage() {
             </button>
           ))}
         </div>
-      )}
-    </div>
+      </div>
+    )}
 
         
             <button
+              ref={startButtonRef}
               type="button"
-              className="primary-button"
-              onClick={() => {
+              className="primary-button input-start-button"
+              onClick={async () => {
                 const cleanedNeed = learningNeed.trim()
 
                 if (cleanedNeed === '') {
@@ -833,26 +851,49 @@ function handleRevisionMessage() {
                 }
 
                 setError('')
-                setLearningProfile({
+                const initialProfile: LearningProfile = {
                   topic: cleanedNeed,
-                })
+                }
+
+                setLearningProfile(initialProfile)
 
                 setLearningProfileSummary({
                   topic: summarizeProfileField('topic', cleanedNeed),
                 })
 
-                setMessages([
+                const initialMessages: Message[] = [
                   {
                     role: 'learner',
                     text: cleanedNeed,
                   },
-                  {
-                    role: 'ai',
-                    text: nextQuestion ?? '請再告訴我一些你的學習需求。',
-                  },
-                ])
+                ]
 
+                setMessages(initialMessages)
                 setStep('clarify')
+                setIsAiLoading(true)
+
+                try {
+                  const result = await continueLearningConversation(
+                    initialMessages,
+                    initialProfile
+                  )
+
+                  applyConversationProfile(result, initialProfile)
+                  setMessages([
+                    ...initialMessages,
+                    { role: 'ai', text: result.reply },
+                  ])
+                } catch {
+                  setMessages([
+                    ...initialMessages,
+                    {
+                      role: 'ai',
+                      text: '我已經看到你提供的學習方向。你最希望先達成什麼具體成果呢？',
+                    },
+                  ])
+                } finally {
+                  setIsAiLoading(false)
+                }
              }}
 >
   開始設定學習目標
@@ -957,23 +998,44 @@ function handleRevisionMessage() {
           text={message.text}
         />
       ))}
+
+      {isAiLoading && (
+        <div className="message-row ai" aria-live="polite">
+          <div className="message-bubble ai">
+            <div className="message-role">AI Learning Coach</div>
+            <div className="message-content thinking-message">
+              AI 正在產生對話<span className="thinking-dots">...</span>
+            </div>
+          </div>
+        </div>
+      )}
 </div>
       
 
-      {!isComplete && (
-        <div className="answer-area">
+      <div className="answer-area">
           <textarea
-            placeholder="請輸入你的回答"
+            placeholder={
+              isComplete
+                ? '還想補充或修改嗎？也可以直接產生學習目標'
+                : '請輸入你的回答'
+            }
             value={reason}
             onChange={(event) => {
               setReason(event.target.value)
             }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault()
+                answerButtonRef.current?.click()
+              }
+            }}
           />
 
           <button
+            ref={answerButtonRef}
             type="button"
             className="primary-button"
-            onClick={() => {
+            onClick={async () => {
               const cleanedReason = reason.trim()
 
               if (cleanedReason === '') {
@@ -1056,6 +1118,33 @@ function handleRevisionMessage() {
                 setReason('')
 
                 return
+              }
+
+              setIsAiLoading(true)
+              const submittedMessages: Message[] = [
+                ...messages,
+                { role: 'learner', text: cleanedReason },
+              ]
+              setMessages(submittedMessages)
+              setReason('')
+
+              try {
+                const result = await continueLearningConversation(
+                  submittedMessages,
+                  learningProfile
+                )
+
+                applyConversationProfile(result, learningProfile)
+                setMessages([
+                  ...submittedMessages,
+                  { role: 'ai', text: result.reply },
+                ])
+                setCurrentFieldAnswers([])
+                return
+              } catch {
+                // API 不可用時繼續執行下方本地驗證。
+              } finally {
+                setIsAiLoading(false)
               }
 
 
@@ -1149,8 +1238,6 @@ function handleRevisionMessage() {
 
               const nextStep = questionStep + 1
 
-              setAnswers([...answers, cleanedReason])
-
               if (nextStep < questions.length) {
                 setMessages([
                   ...messages,
@@ -1183,18 +1270,18 @@ function handleRevisionMessage() {
 
               setReason('')
             }}
-          >
-            送出回答
+            disabled={isAiLoading}
+            >
+              送出回答
           </button>
-        </div>
-        
-      )}
+      </div>
 
       {isComplete && (
         <button
           type="button"
           className="primary-button"
-          onClick={() => {
+          disabled={isGoalLoading}
+          onClick={async () => {
             if (
               !learningProfile.motivation ||
               !learningProfile.outcome ||
@@ -1204,34 +1291,51 @@ function handleRevisionMessage() {
               return
             }
 
-            const generatedGoal: LearningGoal = {
-              goalStatement: generateGoalStatement(
-                learningProfileSummary.topic,
-                learningProfileSummary.outcome ?? '',
-                learningProfileSummary.duration ?? '',
-                learningProfileSummary.dailyTime ?? ''
-              ),
+            setIsGoalLoading(true)
 
-              topic: learningProfileSummary.topic,
-              motivation: learningProfileSummary.motivation ?? '',
-              outcome: learningProfileSummary.outcome ?? '',
-              duration: learningProfileSummary.duration ?? '',
-              dailyTime: learningProfileSummary.dailyTime ?? '',
+            let generatedGoal: LearningGoal
 
-              aiRationale: generateGoalRationale(
-                learningProfileSummary.topic,
-                learningProfileSummary.motivation ?? '',
-                learningProfileSummary.outcome ?? '',
-                learningProfileSummary.duration ?? '',
-                learningProfileSummary.dailyTime ?? ''
-              ),
+            try {
+              generatedGoal = await generateLearningGoal(
+                learningProfile,
+                learningProfileSummary,
+                messages
+              )
+            } catch {
+              generatedGoal = {
+                goalStatement: generateGoalStatement(
+                  learningProfileSummary.topic,
+                  learningProfileSummary.outcome ?? '',
+                  learningProfileSummary.duration ?? '',
+                  learningProfileSummary.dailyTime ?? ''
+                ),
+
+                topic: learningProfileSummary.topic,
+                motivation: learningProfileSummary.motivation ?? '',
+                outcome:
+                  learningProfile.outcome ??
+                  learningProfileSummary.outcome ??
+                  '',
+                duration: learningProfileSummary.duration ?? '',
+                dailyTime: learningProfileSummary.dailyTime ?? '',
+
+                aiRationale: generateGoalRationale(
+                  learningProfileSummary.topic,
+                  learningProfileSummary.motivation ?? '',
+                  learningProfileSummary.outcome ?? '',
+                  learningProfileSummary.duration ?? '',
+                  learningProfileSummary.dailyTime ?? ''
+                ),
+              }
+            } finally {
+              setIsGoalLoading(false)
             }
 
             setLearningGoal(generatedGoal)
             setStep('goal')
           }}
         >
-          產生學習目標
+          {isGoalLoading ? '正在整理學習目標…' : '產生學習目標'}
         </button>
       )}
     </section>
@@ -1455,9 +1559,19 @@ function handleRevisionMessage() {
                   : 'revision-message ai'
               }
             >
-              {message.text}
+              {message.role === 'ai' ? (
+                <TypewriterText text={message.text} />
+              ) : (
+                message.text
+              )}
             </div>
           ))}
+
+          {isRevisionAiLoading && (
+            <div className="revision-message ai thinking-message">
+              AI 正在產生對話<span className="thinking-dots">...</span>
+            </div>
+          )}
 
         </div>
 
@@ -1478,16 +1592,17 @@ function handleRevisionMessage() {
                 !event.shiftKey
               ) {
                 event.preventDefault()
-                handleRevisionMessage()
+                revisionSendButtonRef.current?.click()
               }
             }}
           />
 
           <button
+            ref={revisionSendButtonRef}
             type="button"
             className="revision-send-button"
-            onClick={handleRevisionMessage}
-            disabled={!revisionInput.trim()}
+            onClick={() => void handleRevisionMessage()}
+            disabled={!revisionInput.trim() || isRevisionAiLoading}
           >
             送出
           </button>
@@ -1530,29 +1645,37 @@ function handleRevisionMessage() {
       <button
   type="button"
   className="primary-button"
-  disabled={!revisionReady}
-  onClick={() => {
-    if (!revisionReady) {
+  disabled={!revisionReady || isRevisionGenerating}
+  onClick={async () => {
+    if (!revisionReady || isRevisionGenerating) {
       return
     }
 
-    const revisedGoalStatement = generateRevisedGoalStatement(
-      learningGoal,
-      revisionMessages
-    )
+    setIsRevisionGenerating(true)
 
-    const revisedGoal: LearningGoal = {
-      ...learningGoal,
+    let revisedGoal: LearningGoal
 
-      goalStatement: revisedGoalStatement,
+    try {
+      revisedGoal = await reviseLearningGoal(learningGoal, revisionRequests)
+    } catch (revisionError) {
+      console.error('Gemini goal revision error:', revisionError)
 
-      aiRationale: generateGoalRationale(
-        learningGoal.topic,
-        learningGoal.motivation,
-        learningGoal.outcome,
-        learningGoal.duration,
-        learningGoal.dailyTime
-      ),
+      revisedGoal = {
+        ...learningGoal,
+        goalStatement: generateRevisedGoalStatement(
+          learningGoal,
+          revisionMessages
+        ),
+        aiRationale: generateGoalRationale(
+          learningGoal.topic,
+          learningGoal.motivation,
+          learningGoal.outcome,
+          learningGoal.duration,
+          learningGoal.dailyTime
+        ),
+      }
+    } finally {
+      setIsRevisionGenerating(false)
     }
 
     setLearningGoal(revisedGoal)
@@ -1572,7 +1695,7 @@ function handleRevisionMessage() {
     setStep('goal')
   }}
 >
-  完成討論，產生新方案
+  {isRevisionGenerating ? '正在統整新方案…' : '完成討論，產生新方案'}
 </button>
 
 

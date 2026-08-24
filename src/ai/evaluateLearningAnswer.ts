@@ -200,34 +200,6 @@ function evaluateMotivation(
    * 判斷回答是否已經包含較具體的「需求／目的／情境」。
    */
 
-  const motivationPatterns = [
-    '因為',
-    '為了',
-    '希望',
-    '需要',
-    '準備',
-    '有興趣',
-    '喜歡',
-    '工作',
-    '職場',
-    '交換',
-    '留學',
-    '國外',
-    '旅行',
-    '考試',
-    '證照',
-    '研究',
-    '課業',
-    '升學',
-    '未來',
-    '溝通',
-    '交流',
-    '生活',
-    '旅遊',
-    '當地人',
-    '外國人',
-  ]
-
   const contextPatterns = [
     '出國',
     '國外',
@@ -276,69 +248,6 @@ function evaluateMotivation(
   }
 }
 
-function getMotivationFollowUp(
-  answer: string
-): string {
-  // 已經同時提到「出國」與「溝通」
-  if (
-    (
-      answer.includes('出國') ||
-      answer.includes('旅行') ||
-      answer.includes('旅遊')
-    ) &&
-    (
-      answer.includes('溝通') ||
-      answer.includes('聊天') ||
-      answer.includes('交流')
-    )
-  ) {
-    return '了解，你希望在出國時能更順利地和別人溝通。這對你來說主要是為了旅遊時更方便，還是希望能更自在地和外國人交流呢？'
-  }
-
-  // 只提到出國／旅行
-  if (
-    answer.includes('出國') ||
-    answer.includes('旅行') ||
-    answer.includes('旅遊')
-  ) {
-    return '了解，你希望在出國或旅行時能使用所學的內容。你最希望用在哪些情境呢？例如問路、點餐、購物，或和別人聊天？'
-  }
-
-  // 工作
-  if (
-    answer.includes('工作') ||
-    answer.includes('職場')
-  ) {
-    return '了解，這和你的工作需求有關。你最希望這項能力能幫助你完成什麼工作情境呢？例如開會、簡報、閱讀資料，或和國外同事溝通？'
-  }
-
-  // 考試
-  if (
-    answer.includes('考試') ||
-    answer.includes('證照')
-  ) {
-    return '了解，你有考試或證照方面的需求。你目前主要想準備哪一項考試，或希望達到什麼程度呢？'
-  }
-
-  // 興趣
-  if (
-    answer.includes('興趣') ||
-    answer.includes('喜歡')
-  ) {
-    return '了解，你主要是因為興趣而想學。是什麼情境或經驗讓你開始對這個主題感興趣呢？'
-  }
-
-  // 溝通
-  if (
-    answer.includes('溝通') ||
-    answer.includes('聊天') ||
-    answer.includes('交流')
-  ) {
-    return '了解，你希望能更順利地和別人溝通。你主要希望在哪一種情境下使用這項能力呢？'
-  }
-
-  return '我大概了解你的方向了，但還需要再具體一點。你可以告訴我，你希望學會之後能解決什麼實際需求嗎？'
-}
 /* ==================================================
    OUTCOME
    學完之後希望能做到什麼？
