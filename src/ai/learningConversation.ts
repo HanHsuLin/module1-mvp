@@ -20,7 +20,7 @@ export async function continueLearningConversation(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ messages, profile }),
-    signal: AbortSignal.timeout(15_000),
+    signal: AbortSignal.timeout(40_000),
   })
 
   if (!response.ok) {

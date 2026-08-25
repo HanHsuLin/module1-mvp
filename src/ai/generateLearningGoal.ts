@@ -25,6 +25,7 @@ export async function generateLearningGoal(
       profile,
       messages,
     }),
+    signal: AbortSignal.timeout(50_000),
   })
 
   if (!response.ok) {
@@ -55,7 +56,7 @@ export async function reviseLearningGoal(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ originalGoal, revisionRequests }),
-    signal: AbortSignal.timeout(15_000),
+    signal: AbortSignal.timeout(50_000),
   })
 
   if (!response.ok) {
