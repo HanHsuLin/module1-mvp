@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { createServer as createViteServer } from 'vite'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 dotenv.config()
 
@@ -615,6 +617,14 @@ async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
     vite = await createViteServer({ server: { middlewareMode: true } })
     app.use(vite.middlewares)
+  } else {
+    const serverDirectory = path.dirname(fileURLToPath(import.meta.url))
+    const distDirectory = path.resolve(serverDirectory, '../dist')
+
+    app.use(express.static(distDirectory))
+    app.get(/^(?!\/api\/).*/, (_req, res) => {
+      res.sendFile(path.join(distDirectory, 'index.html'))
+    })
   }
 
   const httpServer = app.listen(PORT, () => {
