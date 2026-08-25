@@ -265,6 +265,7 @@ ${JSON.stringify(input)}
       suggestions: result.suggestions,
       expiresAt: Date.now() + 30 * 60_000,
     })
+    console.log('Gemini topic suggestions success')
     res.json(result)
   } catch (error) {
     console.error('Gemini topic suggestions error:', error)
@@ -325,7 +326,7 @@ ${JSON.stringify(messages)}
 
   try {
     const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 20_000)
+    const timeout = setTimeout(() => controller.abort(), 35_000)
 
     const response = await fetch(
       'https://generativelanguage.googleapis.com/v1beta/interactions',
@@ -359,6 +360,7 @@ ${JSON.stringify(messages)}
     const result = JSON.parse(
       extractGeminiText(interaction)
     ) as LearningConversationPayload
+    console.log('Gemini conversation success')
     res.json(enforceProfileRules(result))
   } catch (error) {
     console.error('Gemini conversation error:', error)
@@ -406,7 +408,7 @@ ${JSON.stringify(messages)}
 
   try {
     const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 20_000)
+    const timeout = setTimeout(() => controller.abort(), 45_000)
     const response = await fetch(
       'https://generativelanguage.googleapis.com/v1beta/interactions',
       {
@@ -436,6 +438,7 @@ ${JSON.stringify(messages)}
 
     const interaction = (await response.json()) as GeminiInteraction
     const result = JSON.parse(extractGeminiText(interaction))
+    console.log('Gemini goal generation success')
     res.json(result)
   } catch (error) {
     console.error('Gemini goal generation error:', error)
@@ -478,7 +481,7 @@ ${JSON.stringify(messages)}
 
   try {
     const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 20_000)
+    const timeout = setTimeout(() => controller.abort(), 35_000)
     const response = await fetch(
       'https://generativelanguage.googleapis.com/v1beta/interactions',
       {
@@ -506,6 +509,7 @@ ${JSON.stringify(messages)}
     }
 
     const interaction = (await response.json()) as GeminiInteraction
+    console.log('Gemini revision conversation success')
     res.json(JSON.parse(extractGeminiText(interaction)))
   } catch (error) {
     console.error('Gemini revision conversation error:', error)
@@ -574,7 +578,7 @@ ${JSON.stringify(revisionRequests)}
 
   try {
     const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 20_000)
+    const timeout = setTimeout(() => controller.abort(), 45_000)
     const response = await fetch(
       'https://generativelanguage.googleapis.com/v1beta/interactions',
       {
@@ -604,6 +608,7 @@ ${JSON.stringify(revisionRequests)}
 
     const interaction = (await response.json()) as GeminiInteraction
     const result = JSON.parse(extractGeminiText(interaction))
+    console.log('Gemini goal revision success')
     res.json(result)
   } catch (error) {
     console.error('Gemini goal revision error:', error)
